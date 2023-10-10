@@ -1,0 +1,120 @@
+﻿<h2>Order Your Favourite Bike!</h2>
+<div class="container">
+
+    <div class="master">
+
+        <h2>Order Details</h2>
+        <table class="table table-responsive">
+            <tr>
+                <td>Order Note</td>
+                <td>
+                    <textarea id="description" class="form-control"></textarea>
+                </td>
+
+                <td>Order Date</td>
+                <td>
+                    <input type="date" id="orderDate" class="form-control" />
+                    <span class="error">Valid order date required (ex: MM-dd-yyyy)</span>
+                </td>
+            </tr>
+            <tr>
+                <td>Upload Adress Proof Image</td>
+                <td>
+                    <input type="file" name="ImageFile" id="imageupload" class="form-control" />
+                </td>
+
+                <td>Terms!(Agree/Not)</td>
+                <td>
+                    <input id="bool" type="checkbox" class="form-control">
+                </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="details">
+        <h2>
+            Order Item Selection
+        </h2>
+        <table class="table table-responsive">
+            <tr>
+                <td>Category</td>
+                <td>Product</td>
+                <td>Quantity</td>
+                <td>Rate</td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr class="mycontainer" id="mainrow">
+                <td>
+                    <select id="productCategory" class="pc form-control" onchange="LoadProduct(this)">
+                        <option>Select</option>
+                    </select>
+                    <span class="error">Select Category</span>
+                </td>
+                <td>
+                    <select id="product" class="product form-control">
+                        <option>Select</option>
+                    </select>
+                    <span class="error">Select product</span>
+                </td>
+                <td>
+                    <input type="text" id="quantity" class="quantity form-control" />
+                    <span class="error">Valid quantity required</span>
+                </td>
+                <td>
+                    <input type="text" id="rate" class="rate form-control" />
+                    <span class="error">Valid rate required</span>
+                </td>
+                <td>
+                    <input type="button" id="add" value="add" style="width:80px" class="btn btn-success" />
+                </td>
+            </tr>
+        </table>
+        <div id="orderItems">
+            @Html.Partial("_PartialPage1")
+        </div>
+        <div style="padding:10px 0; text-align:right">
+            <input id="submit" type="button" value="Save Order" class="btn btn-primary" style="padding:10px 20px" />
+
+        </div>
+    </div>
+</div>
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+
+<script src="~/Scripts/IndexScript.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('#submit').click(function () {
+            var formData = new FormData();
+            formData.append('file', $('#imageupload')[0].files[0]);
+
+            $.ajax({
+                type: 'POST',
+                url: '/OrderPlace/save',
+                data: formData,
+                contentType: false,
+                processData: false
+
+            })
+        })
+    })
+</script>
+
+
+
+
+<style>
+    span.error {
+        display: block;
+        visibility: hidden;
+        color: red;
+        font-size: 90%;
+    }
+
+    tr.error {
+        background-color: rgba(255,0,0,0.35);
+    }
+</style>
